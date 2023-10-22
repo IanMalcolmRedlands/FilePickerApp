@@ -10,19 +10,16 @@ public class CustomLinkedList implements Iterable<Double> {
 	
 	/** Internal nodes to store value and previous and next indices in nodes array **/
 	private class Node {
-		public int last;
 		public int next;
 		public double value;
 		
-		public Node(double value, int last, int next) {
+		public Node(double value, int next) {
 			this.value = value;
-			this.last = last;
 			this.next = next;
 		}
 		
-		public void set(double value, int last, int next) {
+		public void set(double value, int next) {
 			this.value = value;
-			this.last = last;
 			this.next = next;
 		}
 	}
@@ -36,18 +33,18 @@ public class CustomLinkedList implements Iterable<Double> {
 	
 	public void add(double num) {
 		if (this.isEmpty()) {
-			nodes.add(new Node(num, -1, -1));
+			nodes.add(new Node(num, -1));
 			headIndex = endIndex = 0;
 			return;
 		}
 		
 		if (freeSpacesIsEmpty()) {
-			nodes.add(new Node(num, endIndex, -1));
+			nodes.add(new Node(num, -1));
 			nodes.get(endIndex).next = endIndex = nodes.size()-1;
 		}
 		else {
 			int index = getNextFreeSpace();
-			nodes.get(index).set(num, endIndex, -1);
+			nodes.get(index).set(num, -1);
 			nodes.get(endIndex).next = endIndex = index;
 		}
 	}

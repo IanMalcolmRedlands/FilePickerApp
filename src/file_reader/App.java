@@ -49,7 +49,7 @@ public class App extends Application {
 	private void initPicker() {
 		filePicker = new FileChooser();
 		filePicker.setTitle("Pick a .txt file");
-		filePicker.getExtensionFilters().add(new ExtensionFilter(".txt", "txt") );
+		filePicker.getExtensionFilters().add(new ExtensionFilter(".txt", "*.txt") );
 	}
 	
 	
