@@ -18,7 +18,8 @@ public class CustomIterator implements Iterator<Double> {
 
 	@Override
 	public Double next() {
-		return list.get(++currentIndex);
+		currentIndex = list.getNextIndex(currentIndex);
+		return list.get(currentIndex);
 	}
 
 }

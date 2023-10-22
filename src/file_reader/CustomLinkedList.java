@@ -1,14 +1,14 @@
 package file_reader;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class CustomLinkedList implements Iterable<Double> {
-	private ArrayList<Node> values;
-	private ArrayList<Integer> freeSpaces;
+	private ArrayList<Node> nodes;
+	private ArrayList<Integer> freeSpaces; //stores free spaces in array
 	private int headIndex, endIndex;
 	private int freeSpacesHighestIndex;
 	
+	/** Internal nodes to store value and previous and next indices in nodes array **/
 	private class Node {
 		public int last;
 		public int next;
@@ -28,39 +28,46 @@ public class CustomLinkedList implements Iterable<Double> {
 	}
 	
 	public CustomLinkedList() {
-		values = new ArrayList<Node>();
+		nodes = new ArrayList<Node>();
 		freeSpaces = new ArrayList<Integer>();
 		headIndex = endIndex = -1;
 		freeSpacesHighestIndex = -1;
 	}
 	
-	public void add(Double num) {
+	public void add(double num) {
 		if (this.isEmpty()) {
-			values.add(new Node(num, -1, -1));
+			nodes.add(new Node(num, -1, -1));
 			headIndex = endIndex = 0;
 			return;
 		}
 		
 		if (freeSpacesIsEmpty()) {
-			values.add(new Node(num, endIndex, -1));
-			endIndex = values.size()-1;
+			nodes.add(new Node(num, endIndex, -1));
+			nodes.get(endIndex).next = endIndex = nodes.size()-1;
 		}
 		else {
 			int index = getNextFreeSpace();
-			values.get(index).set(num, endIndex, -1);
-			endIndex = index;
+			nodes.get(index).set(num, endIndex, -1);
+			nodes.get(endIndex).next = endIndex = index;
 		}
 	}
 	
 	public double get(int index) {
-		return values.get(index).value;
+		return nodes.get(index).value;
 	}
 	
 	public boolean hasNext(int index) {
 		if (index < 0) {
 			return !isEmpty();
 		}
-		return values.get(index).next != -1;
+		return nodes.get(index).next != -1;
+	}
+	
+	public int getNextIndex(int index) {
+		if (index < 0) {
+			return headIndex;
+		}
+		return nodes.get(index).next;
 	}
 	
 	private boolean freeSpacesIsEmpty() {
@@ -70,12 +77,6 @@ public class CustomLinkedList implements Iterable<Double> {
 	private int getNextFreeSpace() {
 		freeSpacesHighestIndex--;
 		return freeSpaces.get(freeSpacesHighestIndex+1);
-	}
-	
-	private void clearAll() {
-		headIndex = endIndex = -1;
-		values.clear();
-		freeSpaces.clear();
 	}
 	
 	public boolean isEmpty() {
